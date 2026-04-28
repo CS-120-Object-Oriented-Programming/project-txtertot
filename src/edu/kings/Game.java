@@ -9,7 +9,7 @@ package edu.kings;
  * creates the parser and starts the game. It also evaluates and executes the
  * commands that the parser returns.
  *
- * @author Maria Jump
+ * @author Maria Jump, Averi Chlipala
  * @version 2015.02.01
  *
  * Used with permission from Dr. Maria Jump at Northeastern University
@@ -116,22 +116,7 @@ public class Game {
 			} else {
 				Room newRoom = doorway.getDestination();
 				currentRoom = newRoom;
-				Writer.println(newRoom.getName() + ":");
-				Writer.println("You are " + newRoom.getDescription());
-				Writer.print("Exits: ");
-				if (newRoom.northExit != null) {
-					Writer.print("north ");
-				}
-				if (newRoom.eastExit != null) {
-					Writer.print("east ");
-				}
-				if (newRoom.southExit != null) {
-					Writer.print("south ");
-				}
-				if (newRoom.westExit != null) {
-					Writer.print("west ");
-				}
-				Writer.println();
+				printLocationInformation();
 			}
 		}
 	}
@@ -165,6 +150,13 @@ public class Game {
 		Writer.println("Campus of Kings is a new, incredibly boring adventure game.");
 		Writer.println("Type 'help' if you need help.");
 		Writer.println();
+		printLocationInformation();
+	}
+
+	/** 
+	 * Prints out the current location and exits
+	 */
+	private void printLocationInformation() {
 		Writer.println(currentRoom.getName() + ":");
 		Writer.println("You are " + currentRoom.getDescription());
 		Writer.print("Exits: ");
@@ -182,7 +174,6 @@ public class Game {
 		}
 		Writer.println("");
 	}
-
 	/**
 	 * "Quit" was entered. Check the rest of the command to see whether we
 	 * really quit the game.
