@@ -14,16 +14,33 @@ package edu.kings;
 
 public class CommandWords {
 	/** A constant array that holds all valid command words. */
-	private static String[] validCommands;
+	private static CommandEnum[] validCommands;
 
 	/**
 	 * Static block to initialize the fields of CommandWords.
 	 */
 	static {
-		String[] tempCommands = {"go", "quit", "help" };
+		CommandEnum[] tempCommands = {CommandEnum.GO, CommandEnum.HELP, CommandEnum.LOOK, CommandEnum.QUIT};
 		validCommands = tempCommands;
 	}
 
+	public static CommandEnum getCommand(String theString) {
+		CommandEnum retVal;
+		
+		if (theString.equals("go")) {
+			retVal = CommandEnum.GO;
+		} else if (theString.equals("quit")) {
+			retVal = CommandEnum.QUIT;
+		} else if (theString.equals("help")) {
+			retVal = CommandEnum.HELP;
+    	} else if (theString.equals("look")) {
+			retVal = CommandEnum.LOOK;
+        } else {
+        	retVal = null;
+		}
+        
+        return retVal;
+	}
 	/**
 	 * Check whether a given String is a valid command word.
 	 *
