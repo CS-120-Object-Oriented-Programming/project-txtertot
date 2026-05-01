@@ -18,16 +18,19 @@ package edu.kings;
 public class Game {
 	/** The world where the game takes place. */
 	private World world;
-	/** The room the player character is currently in. */
-	private Room currentRoom;
-
+	/** you!! */
+	private Player person;
+	/** Amount of turns made */
+	private int turns = 0;
+	/** How many times player went. */
+	private int goAmount = 0;
 	/**
 	 * Create the game and initialize its internal map.
 	 */
 	public Game() {
 		world = new World();
 		// set the starting room
-		currentRoom = world.getRoom("outside");
+		person = new Player (world.getRoom("outside"));
 	}
 
 	/**
@@ -62,17 +65,29 @@ public class Game {
 
 		if (command.isUnknown()) {
 			Writer.println("I don't know what you mean...");
+			Writer.println(command);
 		} else {
-
-			String commandWord = command.getCommandWord();
-			if (commandWord.equals("help")) {
+			CommandEnum commandWord = command.getCommandWord();
+			switch (commandWord){
+			case CommandEnum.HELP:
 				printHelp();
-			} else if (commandWord.equals("go")) {
+				turns++;
+				break;
+			case CommandEnum.GO:
 				goRoom(command);
-			} else if (commandWord.equals("quit")) {
+				turns++;
+				goAmount++;
+				break;
+			case CommandEnum.QUIT:
 				wantToQuit = quit(command);
-			} else {
+				break;
+			case CommandEnum.LOOK:
+				look();
+				turns++;
+				break;
+			default:
 				Writer.println(commandWord + " is not implemented yet!");
+				break;
 			}
 		}
 		return wantToQuit;
@@ -99,33 +114,38 @@ public class Game {
 			// Try to leave current.
 			Door doorway = null;
 			if (direction.equals("north")) {
-				doorway = currentRoom.northExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("east")) {
-				doorway = currentRoom.eastExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("south")) {
-				doorway = currentRoom.southExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("west")) {
-				doorway = currentRoom.westExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 
 			if (doorway == null) {
 				Writer.println("There is no door!");
 			} else {
 				Room newRoom = doorway.getDestination();
-				currentRoom = newRoom;
+				person.setLocation(newRoom);
 				printLocationInformation();
 			}
 		}
 	}
 
+	
+	private void look() {
+		printLocationInformation();
+	}
 	/**
 	 * Print out the closing message for the player.
 	 */
 	private void printGoodbye() {
 		Writer.println("I hope you weren't too bored here on the Campus of Kings!");
+		Writer.println("You scored " + score() + " points in " + turns + " turns.");
 		Writer.println("Thank you for playing.  Good bye.");
 	}
 
@@ -151,28 +171,14 @@ public class Game {
 		Writer.println("Type 'help' if you need help.");
 		Writer.println();
 		printLocationInformation();
+		Writer.println("");
 	}
 
 	/** 
 	 * Prints out the current location and exits
 	 */
 	private void printLocationInformation() {
-		Writer.println(currentRoom.getName() + ":");
-		Writer.println("You are " + currentRoom.getDescription());
-		Writer.print("Exits: ");
-		if (currentRoom.northExit != null) {
-			Writer.print("north ");
-		}
-		if (currentRoom.eastExit != null) {
-			Writer.print("east ");
-		}
-		if (currentRoom.southExit != null) {
-			Writer.print("south ");
-		}
-		if (currentRoom.westExit != null) {
-			Writer.print("west ");
-		}
-		Writer.println("");
+		Writer.println(person.getLocation().toString());
 	}
 	/**
 	 * "Quit" was entered. Check the rest of the command to see whether we
@@ -189,5 +195,10 @@ public class Game {
 			wantToQuit = false;
 		}
 		return wantToQuit;
+	}
+	
+	private int score() {
+		int score = goAmount * 10;
+		return score;
 	}
 }
