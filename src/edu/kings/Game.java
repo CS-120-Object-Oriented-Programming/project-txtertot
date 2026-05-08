@@ -65,7 +65,7 @@ public class Game {
 
 		if (command.isUnknown()) {
 			Writer.println("I don't know what you mean...");
-			Writer.println(command);
+			Writer.println(command.getCommandWord());
 		} else {
 			CommandEnum commandWord = command.getCommandWord();
 			switch (commandWord){
@@ -83,6 +83,10 @@ public class Game {
 				break;
 			case CommandEnum.LOOK:
 				look();
+				turns++;
+				break;
+			case CommandEnum.EXAMINE:
+				examine(null);
 				turns++;
 				break;
 			default:
@@ -197,6 +201,10 @@ public class Game {
 		return wantToQuit;
 	}
 	
+	private void examine(Item item) {
+		Writer.println(person.getLocation().getItem(person.getLocation()).getName() + ": " + item.getDescription());
+		}
+			
 	private int score() {
 		int score = goAmount * 10;
 		return score;

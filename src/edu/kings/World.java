@@ -68,16 +68,18 @@ public class World {
 	}
 		
 	private void createRooms() {
+		
+		Item almondWater = new Item("Almond Water", "A clear liquid with a sweet almond/vanilla taste mixed with purified rose water.", 10, 2);
 		// Creating all the rooms.
-		Room outside = new Room("Outside", "outside in the center of the King's College campus.");
-		Room holyCross = new Room("Holy Cross", "at one of two main dormitories on campus.");
-		Room essef = new Room("Essef", "at the other main dormitory on campus.");
-		Room campusCenter = new Room("Campus Center", "in the center of student activities on campus.");
-		Room admin = new Room("Admin", "in the oldest building on campus and home to the computer science department.");
-		Room slivaOffice = new Room("Sliva's Office", "in Dr Sliva's office.");
-		Room janoskiOffice = new Room("Janoski's Office", "in Dr Janoski's office.");
-		Room lab = new Room("Computer Lab", "in the Computer Science and Math computing lab.");
-		Room classroom = new Room("Classroom", "in the classroom where the computer science classes are taught.");
+		Room outside = new Room("Outside", "outside in the center of the King's College campus.", almondWater);
+		Room holyCross = new Room("Holy Cross", "at one of two main dormitories on campus.", null);
+		Room essef = new Room("Essef", "at the other main dormitory on campus.", null);
+		Room campusCenter = new Room("Campus Center", "in the center of student activities on campus.", null);
+		Room admin = new Room("Admin", "in the oldest building on campus and home to the computer science department.", null);
+		Room slivaOffice = new Room("Sliva's Office", "in Dr Sliva's office.", null);
+		Room janoskiOffice = new Room("Janoski's Office", "in Dr Janoski's office.", null);
+		Room lab = new Room("Computer Lab", "in the Computer Science and Math computing lab.", null);
+		Room classroom = new Room("Classroom", "in the classroom where the computer science classes are taught.", null);
 
 		// Adding all the rooms to the world.
 		this.addRoom(outside);
@@ -114,5 +116,7 @@ public class World {
 
 		this.createDoor(lab, "south", classroom);
 		this.createDoor(classroom, "north", lab);
+		
 	}
+	
 }

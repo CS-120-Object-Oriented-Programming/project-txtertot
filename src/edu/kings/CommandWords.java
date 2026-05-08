@@ -20,26 +20,28 @@ public class CommandWords {
 	 * Static block to initialize the fields of CommandWords.
 	 */
 	static {
-		CommandEnum[] tempCommands = {CommandEnum.GO, CommandEnum.HELP, CommandEnum.LOOK, CommandEnum.QUIT};
+		CommandEnum[] tempCommands = {CommandEnum.GO, CommandEnum.HELP, CommandEnum.LOOK, CommandEnum.QUIT, CommandEnum.EXAMINE};
 		validCommands = tempCommands;
 	}
 
 	public static CommandEnum getCommand(String theString) {
-		CommandEnum retVal;
 		
-		if (theString.equals("go")) {
-			retVal = CommandEnum.GO;
-		} else if (theString.equals("quit")) {
-			retVal = CommandEnum.QUIT;
-		} else if (theString.equals("help")) {
-			retVal = CommandEnum.HELP;
-    	} else if (theString.equals("look")) {
-			retVal = CommandEnum.LOOK;
-        } else {
-        	retVal = null;
-		}
-        
-        return retVal;
+	switch(theString) {
+	case("go"):
+		return CommandEnum.GO;
+	case("help"):
+		return CommandEnum.HELP;
+	case("look"):
+		return CommandEnum.LOOK;
+	case("quit"):
+		return CommandEnum.QUIT;
+	case("examine"):
+		return CommandEnum.EXAMINE;
+	case(null):
+	default:
+		return null;
+	
+	}
 	}
 	/**
 	 * Check whether a given String is a valid command word.
@@ -47,11 +49,11 @@ public class CommandWords {
 	 * @param aString The string to determine whether it is a valid command.
 	 * @return true if a given string is a valid command, false if it isn't.
 	 */
-	public static boolean isCommand(String aString) {
+	public static boolean isCommand(CommandEnum aCommandEnum) {
 		boolean valid = false;
 		int index = 0;
 		while (!valid && index < validCommands.length) {
-			if (validCommands[index].equals(aString)) {
+			if (validCommands[index].equals(aCommandEnum)) {
 				valid = true;
 			}
 			index++;
