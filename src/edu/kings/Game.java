@@ -86,7 +86,7 @@ public class Game {
 				turns++;
 				break;
 			case CommandEnum.EXAMINE:
-				examine(null);
+				examine(command);
 				turns++;
 				break;
 			default:
@@ -201,8 +201,8 @@ public class Game {
 		return wantToQuit;
 	}
 	
-	private void examine(Item item) {
-		Writer.println(person.getLocation().getItem(person.getLocation()).getName() + ": " + item.getDescription());
+	private void examine(Command command) {
+		Writer.println(person.getLocation().getItem().getName() + ": " + person.getLocation().getItem().getDescription());
 		}
 			
 	private int score() {

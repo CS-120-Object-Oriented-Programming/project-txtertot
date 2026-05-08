@@ -95,7 +95,7 @@ public class Room {
 			itemsInRoom.add(newItem);
 	}
 	
-	public Item getItem(Room room) {
+	public Item getItem() {
 		return this.item;
 	}
 	
