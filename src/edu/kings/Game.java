@@ -75,6 +75,7 @@ public class Game {
 				break;
 			case CommandEnum.GO:
 				goRoom(command);
+				longHallway();
 				turns++;
 				goAmount++;
 				break;
@@ -91,7 +92,6 @@ public class Game {
 				break;
 			case CommandEnum.TAKE:
 				person.take(person.getLocation().getItem());
-				// THIS DOESNT WORK. ITS IN PLAYER BTW. BUT IT DOESN'T WORK.
 				turns++;
 				break;
 			case CommandEnum.NOCLIP:
@@ -178,7 +178,7 @@ public class Game {
 		Writer.println("You are lost. You are alone. You wander.");
 		Writer.println();
 		Writer.println("Your command words are:");
-		Writer.println("   go quit help");
+		Writer.println("   go quit help look examine take");
 	}
 
 	/**
@@ -216,7 +216,7 @@ public class Game {
 		}
 		return wantToQuit;
 	}
-	
+	// Looking at items in a room!! 
 	private void examine(Command command) {
 		if (person.getLocation().getItem() != null) {
 		Writer.println(person.getLocation().getItem().getName() + ": " + person.getLocation().getItem().getDescription());
@@ -225,17 +225,41 @@ public class Game {
 			Writer.println("There is no item for you to examine here.");
 		}
 		}
+	// more bad code alert. DONT LOOK!! AVERT YOUR EYES! Sends player to different places based on location. Or kills them!
+	public int HP = 100;
 	
 	private void noclip() {
 		if (person.getLocation().getName().equals("A strange wall")) {
-			person.setLocation(world.getRoom("test"));
-			Writer.println("yay!!!");
+			person.setLocation(world.getRoom("Parking Zone"));
+			Writer.println("After a moment of debate you steel yourself and run straight toward the wall. Where the feeling of drywall against your shoulder is expected, there's instead... nothing. The air around you shifts, the smell of wet concrete and the sound of pipes faintly hissing catching your senses. You may want to look around again.");
+		}
+		if (person.getLocation().getName().equals("Outside")) {
+			person.setLocation(world.getRoom("The intersection"));
+			Writer.println("Eager much?? Weirdo.");
 		}
 		else {
-			Writer.println("Ow.");
+			Writer.println("You slam your body into a nearby wall. Ow. Dumbass.");
+			HP = HP - 20;
+				if (HP == 0) {
+					Writer.println("After repeatedly bashing your skull full force against walls your body can't take it anymore. You collapse onto the floor as blood pools around you, your eyes shutting for the final time. [ENDING 3] ");
+					person.setLocation(world.getRoom("GGs"));
+				}
 		}
 	}
 	
+	// bad code alert. but c'mon it works amiright? Counter for how many times someone goes through hallway
+	public int escape = 0;
+	
+	public void longHallway() {
+		if (person.getLocation().getName().equals("The long hallway")) {
+			escape = escape + 1;
+		}
+			if (escape >= 10) {
+				person.setLocation(world.getRoom("The 1%"));
+				Writer.println("You made it. After who knows how long of walking, the exit door is now within reach. You ARE the 1% of hallway explorers that don't quit. The door opened easily as you pushed in the bar, a bright light spilling into the hallway. You step through as your eyes adjust to properly LOOK around. . .");
+	}
+	}
+	// Tracks score. Wow.
 	private int score() {
 		int score = goAmount * 10;
 		return score;

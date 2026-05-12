@@ -56,14 +56,18 @@ public class Player {
 		if (item != null) {
 			if (currentWeight + item.getWeight() <= maxCarryWeight) {
 				inventory.add(item);
-				Writer.println(item.getName() + " has been picked up");
+				Writer.println(item.getName() + " has been picked up.");
 				currentWeight = item.getWeight() + currentWeight;
 				location.removeItem(item);
 			}
 			else {
 				Writer.println(item.getName() + " cannot be picked up.");
 			}
-		}else {
+		}
+		if (item.getName().equals("Laptop")) {
+			Writer.println("At long last, your precious laptop is back in your grasp, the nightmare of those unending hallways quickly fading into just a burning memory. [ENDING 2]");
+		}
+		else {
 			Writer.println("There is no item for you to take.");
 		}
 		
