@@ -20,7 +20,7 @@ public class CommandWords {
 	 * Static block to initialize the fields of CommandWords.
 	 */
 	static {
-		CommandEnum[] tempCommands = {CommandEnum.GO, CommandEnum.HELP, CommandEnum.LOOK, CommandEnum.QUIT, CommandEnum.EXAMINE};
+		CommandEnum[] tempCommands = {CommandEnum.GO, CommandEnum.HELP, CommandEnum.LOOK, CommandEnum.QUIT, CommandEnum.EXAMINE, CommandEnum.TAKE, CommandEnum.NOCLIP};
 		validCommands = tempCommands;
 	}
 
@@ -37,6 +37,8 @@ public class CommandWords {
 		return CommandEnum.QUIT;
 	case("examine"):
 		return CommandEnum.EXAMINE;
+	case("take"):
+		return CommandEnum.TAKE;
 	case("noclip"):
 		return CommandEnum.NOCLIP;
 	case(null):

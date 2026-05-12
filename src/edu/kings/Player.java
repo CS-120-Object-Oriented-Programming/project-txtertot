@@ -13,7 +13,7 @@ public class Player {
 	/** players current location */
 	private Room location;
 	ArrayList <Item> inventory = new ArrayList<>();
-	public int currentWeight;
+	public int currentWeight = 0;
 	public int maxCarryWeight = 30;
 	
 	public Player(Room local) {
@@ -53,14 +53,19 @@ public class Player {
 	}
 
 	public void take(Item item) {
-		if (currentWeight + item.getWeight() <= maxCarryWeight) {
-			inventory.add(item);
-			Writer.println(item.getName() + " has been picked up");
-			currentWeight = item.getWeight() + currentWeight;
-			location.removeItem(item);
+		if (item != null) {
+			if (currentWeight + item.getWeight() <= maxCarryWeight) {
+				inventory.add(item);
+				Writer.println(item.getName() + " has been picked up");
+				currentWeight = item.getWeight() + currentWeight;
+				location.removeItem(item);
+			}
+			else {
+				Writer.println(item.getName() + " cannot be picked up.");
+			}
+		}else {
+			Writer.println("There is no item for you to take.");
 		}
-		else {
-			Writer.println(item.getName() + " cannot be picked up.");
-		}
+		
 	}
 }

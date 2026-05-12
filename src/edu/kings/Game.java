@@ -91,6 +91,7 @@ public class Game {
 				break;
 			case CommandEnum.TAKE:
 				person.take(person.getLocation().getItem());
+				// THIS DOESNT WORK. ITS IN PLAYER BTW. BUT IT DOESN'T WORK.
 				turns++;
 				break;
 			case CommandEnum.NOCLIP:
@@ -217,13 +218,22 @@ public class Game {
 	}
 	
 	private void examine(Command command) {
-		
+		if (person.getLocation().getItem() != null) {
 		Writer.println(person.getLocation().getItem().getName() + ": " + person.getLocation().getItem().getDescription());
+		}
+		else {
+			Writer.println("There is no item for you to examine here.");
+		}
 		}
 	
 	private void noclip() {
-	// HOW DO I CHECK IF A PERSON IS IN A SPECIFIC ROOOOMMMM. ALSO THIS JUST DOESNT EVEN PRINT BECAUSE FUCK ME AMIRIGHT???
-		Writer.println("Hey so funny story..... this command doesn't work. But you would've gotten an ending!");
+		if (person.getLocation().getName().equals("A strange wall")) {
+			person.setLocation(world.getRoom("test"));
+			Writer.println("yay!!!");
+		}
+		else {
+			Writer.println("Ow.");
+		}
 	}
 	
 	private int score() {
