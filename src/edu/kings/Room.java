@@ -99,12 +99,8 @@ public class Room {
 		return this.item;
 	}
 	
-	public Item removeItem(String itemName) {
-		for (int i=0; i < itemsInRoom.size(); i++) {
-			if (itemsInRoom.get(i).getName() == itemName) {
-				itemsInRoom.remove(i);
-				return itemsInRoom.get(i);
+	public void removeItem(Item newItem) {
+		itemsInRoom.remove(newItem);
+		this.item = null;
 			}
-		} return null;
-	}
 }

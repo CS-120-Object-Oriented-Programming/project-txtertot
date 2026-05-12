@@ -37,6 +37,8 @@ public class CommandWords {
 		return CommandEnum.QUIT;
 	case("examine"):
 		return CommandEnum.EXAMINE;
+	case("noclip"):
+		return CommandEnum.NOCLIP;
 	case(null):
 	default:
 		return null;

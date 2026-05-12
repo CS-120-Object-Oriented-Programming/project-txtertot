@@ -89,6 +89,14 @@ public class Game {
 				examine(command);
 				turns++;
 				break;
+			case CommandEnum.TAKE:
+				person.take(person.getLocation().getItem());
+				turns++;
+				break;
+			case CommandEnum.NOCLIP:
+				noclip();
+				turns++;
+				break;
 			default:
 				Writer.println(commandWord + " is not implemented yet!");
 				break;
@@ -129,7 +137,15 @@ public class Game {
 			if (direction.equals("west")) {
 				doorway = person.getLocation().getExit(direction);
 			}
-
+			if (direction.equals("next")) {
+				doorway = person.getLocation().getExit(direction);
+			}
+			if (direction.equals("forward")) {
+				doorway = person.getLocation().getExit(direction);
+			}
+			if (direction.equals("leave")) {
+				doorway = person.getLocation().getExit(direction);
+			}
 			if (doorway == null) {
 				Writer.println("There is no door!");
 			} else {
@@ -148,7 +164,7 @@ public class Game {
 	 * Print out the closing message for the player.
 	 */
 	private void printGoodbye() {
-		Writer.println("I hope you weren't too bored here on the Campus of Kings!");
+		Writer.println("I hope you weren't too bored here on the... Campus of Kings?");
 		Writer.println("You scored " + score() + " points in " + turns + " turns.");
 		Writer.println("Thank you for playing.  Good bye.");
 	}
@@ -158,8 +174,7 @@ public class Game {
 	 * message and a list of the command words.
 	 */
 	private void printHelp() {
-		Writer.println("You are lost. You are alone. You wander");
-		Writer.println("around at the university.");
+		Writer.println("You are lost. You are alone. You wander.");
 		Writer.println();
 		Writer.println("Your command words are:");
 		Writer.println("   go quit help");
@@ -171,7 +186,7 @@ public class Game {
 	private void printWelcome() {
 		Writer.println();
 		Writer.println("Welcome to the Campus of Kings!");
-		Writer.println("Campus of Kings is a new, incredibly boring adventure game.");
+		Writer.println("Campus of Kings is a new, incredibly boring adventure game. Or, at least, it was supposed to be.");
 		Writer.println("Type 'help' if you need help.");
 		Writer.println();
 		printLocationInformation();
@@ -202,9 +217,15 @@ public class Game {
 	}
 	
 	private void examine(Command command) {
+		
 		Writer.println(person.getLocation().getItem().getName() + ": " + person.getLocation().getItem().getDescription());
 		}
-			
+	
+	private void noclip() {
+	// HOW DO I CHECK IF A PERSON IS IN A SPECIFIC ROOOOMMMM. ALSO THIS JUST DOESNT EVEN PRINT BECAUSE FUCK ME AMIRIGHT???
+		Writer.println("Hey so funny story..... this command doesn't work. But you would've gotten an ending!");
+	}
+	
 	private int score() {
 		int score = goAmount * 10;
 		return score;

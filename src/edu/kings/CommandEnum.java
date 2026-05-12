@@ -10,7 +10,11 @@ public enum CommandEnum {
 	
 	LOOK("look"),
 	
-	EXAMINE("examine");
+	EXAMINE("examine"),
+	
+	TAKE("take"),
+	
+	NOCLIP("noclip");
 	
 	/** Command word */
 	
