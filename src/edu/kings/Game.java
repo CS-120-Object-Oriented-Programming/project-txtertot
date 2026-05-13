@@ -233,7 +233,7 @@ public class Game {
 			person.setLocation(world.getRoom("Parking Zone"));
 			Writer.println("After a moment of debate you steel yourself and run straight toward the wall. Where the feeling of drywall against your shoulder is expected, there's instead... nothing. The air around you shifts, the smell of wet concrete and the sound of pipes faintly hissing catching your senses. You may want to look around again.");
 		}
-		if (person.getLocation().getName().equals("Outside")) {
+		else if (person.getLocation().getName().equals("Outside")) {
 			person.setLocation(world.getRoom("The intersection"));
 			Writer.println("Eager much?? Weirdo.");
 		}
