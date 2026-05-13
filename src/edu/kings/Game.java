@@ -9,7 +9,7 @@ package edu.kings;
  * creates the parser and starts the game. It also evaluates and executes the
  * commands that the parser returns.
  *
- * @author Maria Jump
+ * @author Maria Jump, Averi Chlipala
  * @version 2015.02.01
  *
  * Used with permission from Dr. Maria Jump at Northeastern University
@@ -18,16 +18,19 @@ package edu.kings;
 public class Game {
 	/** The world where the game takes place. */
 	private World world;
-	/** The room the player character is currently in. */
-	private Room currentRoom;
-
+	/** you!! */
+	private Player person;
+	/** Amount of turns made */
+	private int turns = 0;
+	/** How many times player went. */
+	private int goAmount = 0;
 	/**
 	 * Create the game and initialize its internal map.
 	 */
 	public Game() {
 		world = new World();
 		// set the starting room
-		currentRoom = world.getRoom("outside");
+		person = new Player (world.getRoom("outside"));
 	}
 
 	/**
@@ -62,17 +65,42 @@ public class Game {
 
 		if (command.isUnknown()) {
 			Writer.println("I don't know what you mean...");
+			Writer.println(command.getCommandWord());
 		} else {
-
-			String commandWord = command.getCommandWord();
-			if (commandWord.equals("help")) {
+			CommandEnum commandWord = command.getCommandWord();
+			switch (commandWord){
+			case CommandEnum.HELP:
 				printHelp();
-			} else if (commandWord.equals("go")) {
+				turns++;
+				break;
+			case CommandEnum.GO:
 				goRoom(command);
-			} else if (commandWord.equals("quit")) {
+				longHallway();
+				turns++;
+				goAmount++;
+				break;
+			case CommandEnum.QUIT:
 				wantToQuit = quit(command);
-			} else {
+				break;
+			case CommandEnum.LOOK:
+				look();
+				turns++;
+				break;
+			case CommandEnum.EXAMINE:
+				examine(command);
+				turns++;
+				break;
+			case CommandEnum.TAKE:
+				person.take(person.getLocation().getItem());
+				turns++;
+				break;
+			case CommandEnum.NOCLIP:
+				noclip();
+				turns++;
+				break;
+			default:
 				Writer.println(commandWord + " is not implemented yet!");
+				break;
 			}
 		}
 		return wantToQuit;
@@ -99,48 +127,46 @@ public class Game {
 			// Try to leave current.
 			Door doorway = null;
 			if (direction.equals("north")) {
-				doorway = currentRoom.northExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("east")) {
-				doorway = currentRoom.eastExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("south")) {
-				doorway = currentRoom.southExit;
+				doorway = person.getLocation().getExit(direction);
 			}
 			if (direction.equals("west")) {
-				doorway = currentRoom.westExit;
+				doorway = person.getLocation().getExit(direction);
 			}
-
+			if (direction.equals("next")) {
+				doorway = person.getLocation().getExit(direction);
+			}
+			if (direction.equals("forward")) {
+				doorway = person.getLocation().getExit(direction);
+			}
+			if (direction.equals("leave")) {
+				doorway = person.getLocation().getExit(direction);
+			}
 			if (doorway == null) {
 				Writer.println("There is no door!");
 			} else {
 				Room newRoom = doorway.getDestination();
-				currentRoom = newRoom;
-				Writer.println(newRoom.getName() + ":");
-				Writer.println("You are " + newRoom.getDescription());
-				Writer.print("Exits: ");
-				if (newRoom.northExit != null) {
-					Writer.print("north ");
-				}
-				if (newRoom.eastExit != null) {
-					Writer.print("east ");
-				}
-				if (newRoom.southExit != null) {
-					Writer.print("south ");
-				}
-				if (newRoom.westExit != null) {
-					Writer.print("west ");
-				}
-				Writer.println();
+				person.setLocation(newRoom);
+				printLocationInformation();
 			}
 		}
 	}
 
+	
+	private void look() {
+		printLocationInformation();
+	}
 	/**
 	 * Print out the closing message for the player.
 	 */
 	private void printGoodbye() {
-		Writer.println("I hope you weren't too bored here on the Campus of Kings!");
+		Writer.println("I hope you weren't too bored here on the... Campus of Kings?");
+		Writer.println("You scored " + score() + " points in " + turns + " turns.");
 		Writer.println("Thank you for playing.  Good bye.");
 	}
 
@@ -149,11 +175,10 @@ public class Game {
 	 * message and a list of the command words.
 	 */
 	private void printHelp() {
-		Writer.println("You are lost. You are alone. You wander");
-		Writer.println("around at the university.");
+		Writer.println("You are lost. You are alone. You wander.");
 		Writer.println();
 		Writer.println("Your command words are:");
-		Writer.println("   go quit help");
+		Writer.println("   go quit help look examine take");
 	}
 
 	/**
@@ -162,27 +187,19 @@ public class Game {
 	private void printWelcome() {
 		Writer.println();
 		Writer.println("Welcome to the Campus of Kings!");
-		Writer.println("Campus of Kings is a new, incredibly boring adventure game.");
+		Writer.println("Campus of Kings is a new, incredibly boring adventure game. Or, at least, it was supposed to be.");
 		Writer.println("Type 'help' if you need help.");
 		Writer.println();
-		Writer.println(currentRoom.getName() + ":");
-		Writer.println("You are " + currentRoom.getDescription());
-		Writer.print("Exits: ");
-		if (currentRoom.northExit != null) {
-			Writer.print("north ");
-		}
-		if (currentRoom.eastExit != null) {
-			Writer.print("east ");
-		}
-		if (currentRoom.southExit != null) {
-			Writer.print("south ");
-		}
-		if (currentRoom.westExit != null) {
-			Writer.print("west ");
-		}
+		printLocationInformation();
 		Writer.println("");
 	}
 
+	/** 
+	 * Prints out the current location and exits
+	 */
+	private void printLocationInformation() {
+		Writer.println(person.getLocation().toString());
+	}
 	/**
 	 * "Quit" was entered. Check the rest of the command to see whether we
 	 * really quit the game.
@@ -198,5 +215,53 @@ public class Game {
 			wantToQuit = false;
 		}
 		return wantToQuit;
+	}
+	// Looking at items in a room!! 
+	private void examine(Command command) {
+		if (person.getLocation().getItem() != null) {
+		Writer.println(person.getLocation().getItem().getName() + ": " + person.getLocation().getItem().getDescription());
+		}
+		else {
+			Writer.println("There is no item for you to examine here.");
+		}
+		}
+	// more bad code alert. DONT LOOK!! AVERT YOUR EYES! Sends player to different places based on location. Or kills them!
+	public int HP = 100;
+	
+	private void noclip() {
+		if (person.getLocation().getName().equals("A strange wall")) {
+			person.setLocation(world.getRoom("Parking Zone"));
+			Writer.println("After a moment of debate you steel yourself and run straight toward the wall. Where the feeling of drywall against your shoulder is expected, there's instead... nothing. The air around you shifts, the smell of wet concrete and the sound of pipes faintly hissing catching your senses. You may want to look around again.");
+		}
+		else if (person.getLocation().getName().equals("Outside")) {
+			person.setLocation(world.getRoom("The intersection"));
+			Writer.println("Eager much?? Weirdo.");
+		}
+		else {
+			Writer.println("You slam your body into a nearby wall. Ow. Dumbass.");
+			HP = HP - 20;
+				if (HP == 0) {
+					Writer.println("After repeatedly bashing your skull full force against walls your body can't take it anymore. You collapse onto the floor as blood pools around you, your eyes shutting for the final time. [ENDING 3] ");
+					person.setLocation(world.getRoom("GGs"));
+				}
+		}
+	}
+	
+	// bad code alert. but c'mon it works amiright? Counter for how many times someone goes through hallway
+	public int escape = 0;
+	
+	public void longHallway() {
+		if (person.getLocation().getName().equals("The long hallway")) {
+			escape = escape + 1;
+		}
+			if (escape >= 10) {
+				person.setLocation(world.getRoom("The 1%"));
+				Writer.println("You made it. After who knows how long of walking, the exit door is now within reach. You ARE the 1% of hallway explorers that don't quit. The door opened easily as you pushed in the bar, a bright light spilling into the hallway. You step through as your eyes adjust to properly LOOK around. . .");
+	}
+	}
+	// Tracks score. Wow.
+	private int score() {
+		int score = goAmount * 10;
+		return score;
 	}
 }

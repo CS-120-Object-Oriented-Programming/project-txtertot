@@ -57,103 +57,135 @@ public class World {
 	 *
 	 * @param from
 	 *            The room where the door originates.
-	 * @param north
-	 *            The room to the north of the originating room.
+	 * @param direction
+	 *            the direction
+	 * @param to
+	 * 			where to
 	 */
-	private void createNorthDoor(Room from, Room north) {
-		Door northDoor = new Door(north);
-		from.northExit = northDoor;
+	private void createDoor(Room from, String direction, Room to) {
+		Door newDoor = new Door(to);
+		rooms.get(from.getName().toLowerCase()).allDoors.put(direction, newDoor);
 	}
-
-	/**
-	 * Helper method for creating doors between rooms.
-	 *
-	 * @param from
-	 *            The room where the door originates.
-	 * @param east
-	 *            The room to the east of the originating room.
-	 */
-	private void createEastDoor(Room from, Room east) {
-		Door eastDoor = new Door(east);
-		from.eastExit = eastDoor;
-	}
-
-	/**
-	 * Helper method for creating doors between rooms.
-	 *
-	 * @param from
-	 *            The room where the door originates.
-	 * @param south
-	 *            The room to the south of the originating room.
-	 */
-	private void createSouthDoor(Room from, Room south) {
-		Door southDoor = new Door(south);
-		from.southExit = southDoor;
-	}
-
-	/**
-	 * Helper method for creating doors between rooms.
-	 *
-	 * @param from
-	 *            The room where the door originates.
-	 * @param west
-	 *            The room to the west of the originating room.
-	 */
-	private void createWestDoor(Room from, Room west) {
-		Door westDoor = new Door(west);
-		from.westExit = westDoor;
-	}
-
-	/**
-	 * This method creates all of the individual places in this world and all
-	 * the doors connecting them.
-	 */
+		
 	private void createRooms() {
+		// Creating all the items.
+		Item paper = new Item("Paper", "Hello, I'm not sure who will find this- if ANYONE will find this, but I must at the very least try to help my fellow man... or woman. or they/them. or-- you get the point. There are certain places here with this deeply unsettling feeling attached to them. Places that make you wish to leave immediately. Despite this feeling, these places are the key to your escape. You can 'noclip' through these spaces like... that one train platform in Harry Potter or something- phase right through physical boundaries and such into someplace new! into FREEDOM! The only 'downside' is that you cannot return, so I urge you to be certain in your choices before doing so.", 10, 100);
+		Item laptop = new Item("Laptop", "The goal.", 1000, 5);
 		// Creating all the rooms.
-		Room outside = new Room("Outside", "outside in the center of the King's College campus.");
-		Room holyCross = new Room("Holy Cross", "at one of two main dormitories on campus.");
-		Room essef = new Room("Essef", "at the other main dormitory on campus.");
-		Room campusCenter = new Room("Campus Center", "in the center of student activities on campus.");
-		Room admin = new Room("Admin", "in the oldest building on campus and home to the computer science department.");
-		Room slivaOffice = new Room("Sliva's Office", "in Dr Sliva's office.");
-		Room janoskiOffice = new Room("Janoski's Office", "in Dr Janoski's office.");
-		Room lab = new Room("Computer Lab", "in the Computer Science and Math computing lab.");
-		Room classroom = new Room("Classroom", "in the classroom where the computer science classes are taught.");
-
+		Room outside = new Room("Outside", "You find yourself wandering toward the McGowan building late at night, having accidentally left your laptop in your earlier class. The air around you feels... wrong as you walk. Trees rustled despite a lack of wind, the usual crickets and insects are unusually quiet. A chilling sense of unease creeps up your spine.", null);
+		Room nope = new Room("Noooope!", "The atmosphere alone is enough to convince you to get the hell out of there. You can always get your laptop tomorrow [ENDING 1].", null);
+		Room ggs = new Room("GGs", "Why are you looking around??? You're dead. You died. Its wraps. Quit, bro.", null);
+		Room backroomEntrance = new Room("???", "As you take a step toward the card scanner you find that your foot does not meet solid ground. Rather, the entirety of your body no-clips through the floor, sending you tumbling down past the concrete and Earth, into an unknown abyss. . . After an unknown amount of time, you begin to regain consciousness.", null);
+		Room level0Description = new Room("Your New Home", "You awaken to the sound of buzzing flourescent lights and the distinct stench of soggy carpet. A barren labryinth of sickly-yellow wallpaper stretches before you, its hallways seemingly changing every time you look away. The entrance in which you came from-- if you could even call it that, is nowhere to be found. All you know is that you STILL need to get your laptop.", null);
+		Room room1 = new Room("The intersection", "You're stood in the center of an intersection with a flickering light above you. Each direction seems to sprawl out endlessly, offering no clues on where the exit may be.", null);
+		Room foreverNorth = new Room("The long hallway", "There is nothing but a series of black, hastily painted arrows pointing North on the lefthand wall. At the end of this hallway you can make out a door with a neon red 'EXIT' sign above it. Its quite far away, but patience is key, right?", null);
+		Room quiterAlert = new Room("Giving up?!", "The way back to the intersection feels like a much shorter distance than your trip to the exit... But you were so close!! 99% of hallway explorers quit right before their big escape, y'know.", null);
+		Room onePercent = new Room("The 1%", "You find yourself standing in the entrance to an empty classroom, your laptop waiting for you just where you had left it.", laptop);
+		Room lostWoodsRipoffExplanation = new Room("Deja vu...", "As you walk, the way in which you came seems to shift and change into someplace unrecognizable. You are now within a new intersection, unable to return to where you began until you find the correct path.", null);
+		Room lostWoodsRipoffStart = new Room("Deja vu", "The flourescent light above you is blindingly bright.", null);
+		Room lostWoodsRipoffNorth = new Room("Deja vu?", "The flourescent light above you is... at an acceptable brightness!", null);
+		Room lostWoodsRipoffWest = new Room("Deja vu?!", "The flourescent light above you is dim. There appears to be a paper stuck firmly to the North wall.", paper);
+		Room lostWoodsRipoffSouth = new Room("Deja vu?!?!", "The flourescent light above you has died out, leaving the room in complete darkness.", null);
+		Room lostWoodsRipoffExit = new Room("FREEDOM!!!!!", "As you walk through the pitch-black corridor, you eventually find yourself back where you began-- As in the starting intersection, NOT maze hell.", null);
+		Room eastHallway = new Room("A strange wall", "A deadend. As you approach the wall at the end of this hallway, a familiar feeling returns. That unease you felt moments before noclipping into this strange place settles back into your bones, sticking the hairs on your arms straight up. You do not wish to linger here for long.", null);
+		Room level1 = new Room("Parking Zone", "Your surroundings are nothing like they were moments ago. What was once moldy carpet and off-yellow wallpaper was now a seemingly endless, puddle-filled parking garage... although the presence of cars is notably minimal. Concrete pillars interupt your view periodically with stairwells present at regular intervals-- it seems, however, despite the new surroundings, you could not escape the hum of fluorescent lights.", null);
+		Room parkingGarage = new Room("Open space", "You're now in the center of a long stretch of parking garage. You notice to the North a door with a neon green 'EXIT' sign above it catches your eye, although you're sure there are other paths to take.", null);
+		Room anExit = new Room("An escape?", "As you approach the door the 'EXIT' sign flickers, pipes groaning faintly in the distance behind you. Your escape is moments away.", null);
+		Room tooEasy = new Room("Too easy!!!", "You push open the door with a loud creaking sound, stepping through the moment you could fit your body through the crack. But all you're met with is darkness here. The door behind you is gone, leaving you cold and alone in a void of nothingness until your inevitable demise. Maybe next time think a little more. [ENDING 4]", null);
+		Room theLights = new Room("The lights", "As you continue to walk down through the parking garage, you notice the lights progressively growing fainter, flickering more often than they were previously as if threatening to turn off if you continued. You're not certain, but you think you see an industrial looking door toward the distant south.", null);
+		Room blackout = new Room("Blackout", "Halfway through your journey to the door you're plunged into total darkness, left with nothing to rely on but your own sense of direction.", null);
+		Room theDoor = new Room("The door", "You try to go retrace your steps backward in the total darkness, your body soon abruptly stopped by cold metal-- The metal of the door, to be exact. A strange sense of finality lingers heavy from it.", null);
+		Room turnedAround = new Room("Turned around", ". . .Despite walking in the direction you were sure the door was in, you find yourself back where you began.", null);
+		Room level2 = new Room("Pipe Dreams", "After slamming your body against the door to force it open, you stumble into an abandoned utility tunnel; narrow and hot. The walls are lined with large, rusting pipes that hiss and groan loudly in your ears until they begin to ache. Predictably, the door behind you seems to have vanished. Your only option is going deeper into these labyrinths once again. And again. And again. And again And again And again and again andagainandagainandagainand-- [ENDING 5].", null);
+		Room staircase = new Room("Concrete stairway", "You stumble upon a slightly damp, concrete staircase with a blindingly bright light emitting from the top.", null);
+		Room backIntheBuilding = new Room("DEJA VU?!?!?!?!", "You ascend the staircase with careful steps, squinting as you walk into the light. As your eyes adjust, you realize this place looks... awfully familiar.", null);
 		// Adding all the rooms to the world.
 		this.addRoom(outside);
-		this.addRoom(holyCross);
-		this.addRoom(essef);
-		this.addRoom(campusCenter);
-		this.addRoom(admin);
-		this.addRoom(slivaOffice);
-		this.addRoom(janoskiOffice);
-		this.addRoom(lab);
-		this.addRoom(classroom);
-
+		this.addRoom(backroomEntrance);
+		this.addRoom(level0Description);
+		this.addRoom(nope);
+		this.addRoom(room1);
+		this.addRoom(foreverNorth);
+		this.addRoom(quiterAlert);
+		this.addRoom(lostWoodsRipoffExplanation);
+		this.addRoom(lostWoodsRipoffStart);
+		this.addRoom(lostWoodsRipoffNorth);
+		this.addRoom(lostWoodsRipoffWest);
+		this.addRoom(lostWoodsRipoffSouth);
+		this.addRoom(lostWoodsRipoffExit);
+		this.addRoom(eastHallway);
+		this.addRoom(level1);
+		this.addRoom(parkingGarage);
+		this.addRoom(onePercent);
+		this.addRoom(ggs);
+		this.addRoom(anExit);
+		this.addRoom(tooEasy);
+		this.addRoom(theLights);
+		this.addRoom(blackout);
+		this.addRoom(turnedAround);
+		this.addRoom(theDoor);
+		this.addRoom(level2);
+		this.addRoom(staircase);
+		this.addRoom(backIntheBuilding);
+		
 		// Creating all the doors between the rooms.
-		this.createSouthDoor(essef, outside);
-		this.createNorthDoor(outside, essef);
-
-		this.createEastDoor(campusCenter, outside);
-		this.createWestDoor(outside, campusCenter);
-
-		this.createEastDoor(outside, holyCross);
-		this.createWestDoor(holyCross, outside);
-
-		this.createSouthDoor(outside, admin);
-		this.createNorthDoor(admin, outside);
-
-		this.createEastDoor(admin, lab);
-		this.createWestDoor(lab, admin);
-
-		this.createSouthDoor(admin, janoskiOffice);
-		this.createNorthDoor(janoskiOffice, admin);
-
-		this.createWestDoor(admin, slivaOffice);
-		this.createEastDoor(slivaOffice, admin);
-
-		this.createSouthDoor(lab, classroom);
-		this.createNorthDoor(classroom, lab);
+		this.createDoor(outside, "forward", backroomEntrance);
+		this.createDoor(outside, "leave", nope);
+		
+		this.createDoor(backroomEntrance, "next", level0Description);
+		this.createDoor(level0Description, "next", room1);
+		
+		this.createDoor(room1, "north", foreverNorth);
+		this.createDoor(foreverNorth, "north", foreverNorth);
+		this.createDoor(foreverNorth, "south", quiterAlert);
+		this.createDoor(quiterAlert, "next", room1);
+		
+		this.createDoor(room1, "south", lostWoodsRipoffExplanation);
+		this.createDoor(lostWoodsRipoffExplanation, "next", lostWoodsRipoffStart);
+		
+		this.createDoor(lostWoodsRipoffStart, "east", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffStart, "west", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffStart, "south", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffStart, "north", lostWoodsRipoffNorth);
+		
+		this.createDoor(lostWoodsRipoffNorth, "north", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffNorth, "east", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffNorth, "south", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffNorth, "west", lostWoodsRipoffWest);
+		
+		this.createDoor(lostWoodsRipoffWest, "north", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffWest, "east", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffWest, "west", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffWest, "south", lostWoodsRipoffSouth);
+		
+		this.createDoor(lostWoodsRipoffSouth, "north", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffSouth, "east", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffSouth, "south", lostWoodsRipoffStart);
+		this.createDoor(lostWoodsRipoffSouth, "west", lostWoodsRipoffExit);
+		
+		this.createDoor(lostWoodsRipoffExit, "next", room1);
+		
+		this.createDoor(room1, "east", eastHallway);
+		this.createDoor(eastHallway, "west", room1);
+		
+		this.createDoor(level1, "next", parkingGarage);
+		this.createDoor(parkingGarage, "north", anExit);
+		this.createDoor(anExit, "south", parkingGarage);
+		this.createDoor(anExit, "forward", tooEasy);
+		
+		this.createDoor(parkingGarage, "west", theLights);
+		this.createDoor(theLights, "east", parkingGarage);
+		this.createDoor(theLights, "south", blackout);
+		this.createDoor(blackout, "south", turnedAround);
+		this.createDoor(turnedAround, "next", parkingGarage);
+		this.createDoor(blackout, "north", theDoor);
+		this.createDoor(theDoor, "forward", level2);
+		this.createDoor(theDoor, "leave", parkingGarage);
+		
+		this.createDoor(parkingGarage, "south", staircase);
+		this.createDoor(staircase, "north", parkingGarage);
+		this.createDoor(staircase, "forward", backIntheBuilding);
+		this.createDoor(backIntheBuilding, "next", lostWoodsRipoffStart);
 	}
+	
 }
